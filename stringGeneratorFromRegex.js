@@ -2,7 +2,11 @@ const regexOperations = {
     ALTERNATION : '|',
     STAR : '*'
 };
-const pattern =  [{val : '1', action: regexOperations.STAR}, {action: regexOperations.ALTERNATION}, {val : '2'}, {action: regexOperations.ALTERNATION}, {val : '3'},{val : '4'},{val : '5'}];
+function transformInputToPattern() {
+    let regexString = document.getElementById("regexInput").value;
+    console.log(regexString);
+}
+const pattern =  [{val : '1', action: regexOperations.STAR},{val : '1'}, {action: regexOperations.ALTERNATION}, {val : '2'}, {action: regexOperations.ALTERNATION}, {val : '3'},{val : '4'},{val : '5'}];
 let genRe = runner(pattern);
 
 function take(n, generator) {
@@ -22,23 +26,11 @@ function take(n, generator) {
 }
 
 function transformPatternToStack(pattern) {
-    let actionIndexes = [];
-    for(let i=0; i<pattern.length; i++){
-        pattern[i].action === regexOperations.ALTERNATION ? actionIndexes.push(i) : undefined; //check if can use reducer to shorten the syntax
-    }
-    // const actionIndexes = currentPattern.filter(el => !!el.action).map((_, index) => index);
-    // actionIndexes.reduce((_, el) => stack.concat(processPattern(currentPattern,el)));
-    if(actionIndexes.length >0 ) {
-        let stack = [];
-        actionIndexes.forEach(actionIndex => {
-            let patternPrefix = pattern.slice(0, actionIndex);
-            let patternPostfix = pattern.slice(actionIndex + 1);
-            stack.push(patternPrefix);
-            stack.push(patternPostfix);
+        let stack = [[]];
+        pattern.forEach(function(element) {
+            element.action === regexOperations.ALTERNATION ? stack.push([]) : stack[stack.length - 1].push(element);
         });
         return stack;
-    }
-    return  [pattern];
 }
 
 function* runner(startPattern) {
@@ -91,16 +83,16 @@ function processPattern(currentPattern, actionIndex) {
 
 /*
 * TODO:
-*  create array of pattern from regex - use library or try myself
+*  ! create array of pattern from regex - use library or try myself
 *  DONE - make * work with case zero(shouldn't print them at first)
 *  refactor splitRegex + processPattern to support | and * together
 *  try to make splitRegex + processPattern more work more functional
 *  give meaningful names
-*  fix | operator for multiple |
+*  Done -  fix | operator for multiple |
 *  Done - add | operator support (process the regex before the generator and initialize the stack with right amount of sub arrays
 *  add empty string support
 *  DONE - add "take" generator that give support of taking first n strings - from the internet
-*  give an interface to check the functionality
+*  ! give an interface to check the functionality
 *  give interesting test cases
 *  explain how it was built - flattened tree which is transformed into a stack (array of arrays of objects)
 *  try to make no mutations and reduce created objects - only functions
