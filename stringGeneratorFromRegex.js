@@ -2,12 +2,21 @@ const regexOperations = {
     ALTERNATION : '|',
     STAR : '*'
 };
-function transformInputToPattern() {
-    let regexString = document.getElementById("regexInput").value;
-    console.log(regexString);
+
+function isAction(currentChar) {
+    return (currentChar === regexOperations.ALTERNATION || currentChar === regexOperations.STAR);
 }
-const pattern =  [{val : '1', action: regexOperations.STAR},{val : '1'}, {action: regexOperations.ALTERNATION}, {val : '2'}, {action: regexOperations.ALTERNATION}, {val : '3'},{val : '4'},{val : '5'}];
-let genRe = runner(pattern);
+
+function transformInputToPattern() {
+    let startPattern = [];
+    let regexString = document.getElementById("regexInput").value.split('');
+    regexString.map(el => {
+        startPattern.push(isAction(el) ? {action: el} : {val : el});
+    });
+    take(100,runner(startPattern));
+}
+//const pattern =  [{val : '1', action: regexOperations.STAR},{val : '1'}, {action: regexOperations.ALTERNATION}, {val : '2'}, {action: regexOperations.ALTERNATION}, {val : '3'},{val : '4'},{val : '5'}];
+//let genRe = runner(pattern);
 
 function take(n, generator) {
     let matches = '';
@@ -83,6 +92,7 @@ function processPattern(currentPattern, actionIndex) {
 
 /*
 * TODO:
+*  add reset option + run again + if input is changed then reset as well
 *  ! create array of pattern from regex - use library or try myself
 *  DONE - make * work with case zero(shouldn't print them at first)
 *  refactor splitRegex + processPattern to support | and * together
