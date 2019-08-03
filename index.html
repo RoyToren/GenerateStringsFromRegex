@@ -4,13 +4,20 @@
     <title>Regex</title>
 </head>
 <body>
-<script src="stringGeneratorFromRegex.js"></script>
-
+<p>
+    Welcome to the JS implemented, Lazy, No duplication matching string to regex generator. <br>
+    insert a regex with the following possible operators: character, *, | and ϵ for an empty string <br>
+    press the 'Process new regex' button to process 100 strings for the input. <br>
+    If you want more from the same input, specify the amount and press the 'give me more!' button.<br>
+    If you want to reset the strings or use a new regex, please press the 'Process new regex' button.<br>
+</p>
 Regex input: <label for="regexInput"></label><input type="text" id="regexInput" value="">
+<button onclick="transformInputToPattern()">Process new regex</button>
+<button onclick="invokeStringGeneration(100)">give me more!</button>
 
-<p>Click the button to change the value of the text field.</p>
+<ul id="stringOutput">
 
-<button onclick="transformInputToPattern()">Process regex</button>
-
+</ul>
+<script src="stringGeneratorFromRegex.js"></script>
 </body>
 </html>
