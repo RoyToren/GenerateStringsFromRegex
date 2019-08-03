@@ -5,6 +5,9 @@ const regexOperations = {
 const outputStringsList = document.getElementById('stringOutput');
 let genRe = undefined;
 
+function clearStringsList() {
+ outputStringsList.innerHTML = '';
+}
 function transformInputToPattern() {
     let regexString = document.getElementById("regexInput").value.split('');
     let startPattern = regexString.map(el => {return isAction(el) ? [{action: el}] : [{val : el}]})
@@ -102,7 +105,7 @@ function processStarPattern(currentPattern, actionIndex) {
     let currentElement = currentPattern[actionIndex];
     let currentElementChar = currentElement.val.substring(0,1);
     let patternPostfix = currentPattern.slice(actionIndex + 1);
-    return patternPrefix.map(el => ({val: el.val}))
+    return patternPrefix.map(el => el.action === regexOperations.STAR ? {val: el.val.substring(1)} : {val: el.val})
         .concat([{val: currentElement.val + currentElementChar, action: currentElement.action}])
         .concat(patternPostfix);
 }
@@ -113,6 +116,7 @@ function processStarPattern(currentPattern, actionIndex) {
 *  try to make no mutations and reduce created objects - only functions
 *  refactor splitRegexByStarAction + processStarPattern to support | and * together ??
 *  try to make splitRegexByStarAction + processStarPattern more work more functional
+*  BUG : a*bc*d problem with generating bcd - might be fixed now :)
 *  refactor code for review
 *  add comments to code
 *  give interesting test cases

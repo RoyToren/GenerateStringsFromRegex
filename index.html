@@ -6,15 +6,15 @@
 <body>
 <p>
     Welcome to the JS implemented, Lazy, No duplication matching string to regex generator. <br>
-    insert a regex with the following possible operators: character, *, | and ϵ for an empty string <br>
-    press the 'Process new regex' button to process 100 strings for the input. <br>
+    Insert a regex with the following possible operators: character, *, | and ϵ for an empty string. <br>
+    Press the 'process new regex' button to process 100 strings for the input. <br>
     If you want more from the same input, specify the amount and press the 'give me more!' button.<br>
-    If you want to reset the strings or use a new regex, please press the 'Process new regex' button.<br>
+    If you want to reset the strings or use a new regex, please press the 'process new regex' button.<br>
 </p>
 Regex input: <label for="regexInput"></label><input type="text" id="regexInput" value="">
-<button onclick="transformInputToPattern()">Process new regex</button>
+<button onclick="transformInputToPattern()">process new regex</button>
 <button onclick="invokeStringGeneration(100)">give me more!</button>
-
+<button onclick="clearStringsList()">clear results</button>
 <ul id="stringOutput">
 
 </ul>
