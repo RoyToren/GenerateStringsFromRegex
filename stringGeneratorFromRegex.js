@@ -10,7 +10,7 @@ function clearStringsList() {
  outputStringsList.innerHTML = '';
 }
 
-function transformInputToPattern() {
+function transformInputToPattern() { //split function to smaller
     let regexString = document.getElementById("regexInput").value.split('');
     if(regexString.length) {
         let startPattern = regexString.map(el => {
@@ -60,18 +60,30 @@ function invokeStringGeneration() {
 }
 
 function generateStringsByCurrentPattern(n, generator) {
-    while (n>0){
-        let currentValue = generator.next().value;
-        if (currentValue !== undefined) {
-            addToListOfStringsOutput(currentValue);
-            //console.log(currentValue);
-            //console.debug('left to calculate: ' + n);
-            n--;
+    let chunk = 1000;
+    function doChunk() {
+        let cnt = chunk;
+        while (cnt >0) {
+            let currentValue = generator.next().value;
+            if (currentValue !== undefined) {
+                addToListOfStringsOutput(currentValue);
+                n--;
+            } else {
+                console.log('There are no more string left to calculate');
+                break;
+            }
+            cnt --;
+        }
+        if (n > 0) {
+            // set Timeout for async iteration
+            setTimeout(doChunk, 1);
         } else {
-            console.log('There are no more string left to calculate');
-            break;
+            alert('done! and it took: ' + (performance.now() - startTime) + ' milliseconds');
         }
     }
+    let startTime =  performance.now();
+    alert('starting to generate - wait until you get an alert that the process is done!');
+    doChunk();
 }
 
 function addToListOfStringsOutput(currentValue) {
@@ -90,7 +102,8 @@ function transformPatternToStack(pattern) {
 
 function processStack(stack) {
     const currentPattern = stack.shift();
-    return {value: stripRegex(currentPattern), stack: stack.length ? stack.concat(splitRegexByStarAction(currentPattern)) : splitRegexByStarAction(currentPattern)};
+    return {value: stripRegex(currentPattern), stack: stack.length ? stack.concat(splitRegexByStarAction(currentPattern))
+            : splitRegexByStarAction(currentPattern)};
 }
 
 function stripRegex(currentPattern) {
@@ -136,9 +149,10 @@ function processStarPattern(currentPattern, actionIndex) {
 *  try to make splitRegexByStarAction + processStarPattern more work more functional
 *  refactor code for review
 *  add comments to code
-*  try and add webworkers for big input
+*  disable buttons when calculating strings
 *  explain how it was built - flattened tree which is transformed into a stack (array of arrays of objects)
 *  go through the previous exercise (10 power of 10)
+*  DONE - try and add web workers for big input - used async call with chunks
 *  DONE - BUG a*bc*d problem with generating bcd - might be fixed now :)
 *  DONE - give interesting test cases
 *  DONE - add empty string support
