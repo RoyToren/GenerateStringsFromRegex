@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <title>Regex</title>
 </head>
@@ -15,7 +15,12 @@ Regex input: <label for="regexInput"></label><input type="text" id="regexInput" 
 Number of strings to create: <label for="amountInput"></label><input type="text" id="amountInput" value="100"><br>
 <button onclick="transformInputToPattern()">process new regex</button>
 <button onclick="invokeStringGeneration(100)">give me more!</button>
-<button onclick="clearStringsList()">clear results</button>
+<button onclick="clearStringsList()">clear results</button> <br>
+<span>Interesting test cases:</span>
+<button onclick="invokeStringGenerationTestCase('a*bc*d')">a*bc*d</button>
+<button onclick="invokeStringGenerationTestCase('Shal*om|He*ll*o|Hoi|Bonj*our|Marhaba|Guten tag|Yas*ou|Sawubona|Namaste')">hello</button>
+<button onclick="invokeStringGenerationTestCase('i*|lo*ve|func*tion*al|PROGRAMMING*|i love functional programming')">love functional</button>
+<button onclick="invokeStringGenerationTestCase('<|<|<|<|<|<|t*h*ats all folks')">empty strings</button>
 <ul id="stringOutput">
 
 </ul>

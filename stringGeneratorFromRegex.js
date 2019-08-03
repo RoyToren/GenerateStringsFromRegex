@@ -49,6 +49,11 @@ function* runner(startPattern) {
     }
 }
 
+function invokeStringGenerationTestCase(testCase) {
+    document.getElementById('regexInput').value = testCase;
+    transformInputToPattern()
+}
+
 function invokeStringGeneration() {
     let amount = parseInt(document.getElementById('amountInput').value);
     amount > 0 ? generateStringsByCurrentPattern(amount,genRe) : alert('please enter an amount larger than zero to generate');
@@ -126,17 +131,17 @@ function processStarPattern(currentPattern, actionIndex) {
 
 /*
 * TODO:
-*  add empty string support
 *  try to make no mutations and reduce created objects - only functions
 *  refactor splitRegexByStarAction + processStarPattern to support | and * together ??
 *  try to make splitRegexByStarAction + processStarPattern more work more functional
-*  DONE - BUG a*bc*d problem with generating bcd - might be fixed now :)
 *  refactor code for review
 *  add comments to code
-*  give interesting test cases
 *  try and add webworkers for big input
 *  explain how it was built - flattened tree which is transformed into a stack (array of arrays of objects)
 *  go through the previous exercise (10 power of 10)
+*  DONE - BUG a*bc*d problem with generating bcd - might be fixed now :)
+*  DONE - give interesting test cases
+*  DONE - add empty string support
 *  DONE - need to handle * case. create array of pattern from regex - use library or try myself
 *  DONE - give meaningful names
 *  DONE - add reset option + run again + if input is changed then reset as well
