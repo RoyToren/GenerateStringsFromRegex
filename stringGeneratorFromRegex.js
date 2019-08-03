@@ -8,20 +8,26 @@ let genRe = undefined;
 function clearStringsList() {
  outputStringsList.innerHTML = '';
 }
+
 function transformInputToPattern() {
     let regexString = document.getElementById("regexInput").value.split('');
-    let startPattern = regexString.map(el => {return isAction(el) ? [{action: el}] : [{val : el}]})
-        .reduce((acc, el) => {
-            if(el[0].action === regexOperations.STAR){
-                acc[acc.length -1].action = regexOperations.STAR;
-                return acc;
-            } else
-            {
-                return  acc.concat(el);
-            }
-        });
-    genRe = runner(startPattern);
-    invokeStringGeneration(100);
+    if(regexString.length) {
+        let startPattern = regexString.map(el => {
+            return isAction(el) ? [{action: el}] : [{val: el}]
+        })
+            .reduce((acc, el) => {
+                if (el[0].action === regexOperations.STAR) {
+                    acc[acc.length - 1].action = regexOperations.STAR;
+                    return acc;
+                } else {
+                    return acc.concat(el);
+                }
+            });
+        genRe = runner(startPattern);
+        invokeStringGeneration();
+    } else {
+        alert('please enter a valid regular expression');
+    }
 }
 
 function isAction(currentChar) {
@@ -42,8 +48,9 @@ function* runner(startPattern) {
     }
 }
 
-function invokeStringGeneration(amount) {
-    generateStringsByCurrentPattern(amount,genRe);
+function invokeStringGeneration() {
+    let amount = parseInt(document.getElementById('amountInput').value);
+    amount > 0 ? generateStringsByCurrentPattern(amount,genRe) : alert('please enter an amount larger than zero to generate');
 }
 
 function generateStringsByCurrentPattern(n, generator) {
@@ -116,7 +123,7 @@ function processStarPattern(currentPattern, actionIndex) {
 *  try to make no mutations and reduce created objects - only functions
 *  refactor splitRegexByStarAction + processStarPattern to support | and * together ??
 *  try to make splitRegexByStarAction + processStarPattern more work more functional
-*  BUG : a*bc*d problem with generating bcd - might be fixed now :)
+*  DONE - BUG a*bc*d problem with generating bcd - might be fixed now :)
 *  refactor code for review
 *  add comments to code
 *  give interesting test cases
